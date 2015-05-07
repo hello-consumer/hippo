@@ -1,7 +1,93 @@
 <html>
 <head>
-	<script type='text/javascript' src='hippo.js'></script>
-	<style type='text/css' src='hippo.js'></style>
+	<link rel="stylesheet" type="text/css" href="hippo.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script>
+	  // Harmony Button
+	  $(function() {
+	    $( "#harmony" )
+	      .click(function( event ) {
+	      	// event
+	      	alert(44);
+	      });
+	  });
+
+	  $(function() {
+	  	$( ".added_item" )
+	  		.click(function( event ) {
+	  			alert(4423);
+	  		});
+	  });
+
+	  // Utility
+	  function valid_item(item_name) {
+	  	var item_list = [
+	  		"corn",
+	  		"chocolate",
+	  		"andy",
+	  		"aramame",
+	  		"beans",
+	  		"coffee",
+	  		"green leaf",
+	  		"tomato"
+	  	];
+	  	if (jQuery.inArray(item_name, item_list) == -1) {
+	  		return false;
+	  	} else {
+	  		return true;
+	  	}
+	  }
+
+	  function get_added_items() {
+	  	var items = $(".added_item");
+	  	var arr = new Array();
+	  	for (var i = 0; i < items.length; i++) {
+	  		arr.push(items[i].innerText);
+	  	}
+	  	return arr;
+	  }
+
+	  function add_item(item_name) {
+	  	if (jQuery.inArray(item_name, get_added_items()) != -1) {
+	  		return;
+	  	}
+	  	var item = $("<button class='added_item'>");
+	  	item.text(item_name);
+	  	item.click(function(event){console.log(this.remove())});
+	  	$( "#items" ).append(item);
+	  }
+
+	  // Ajax input
+	  $(function() {
+	  	$( "#item_input" ).keypress(
+	  		function(e){
+	  			if(e.which == 13) {
+	  				if(valid_item(this.value)) {
+		  				add_item(this.value);
+		  				this.value = '';
+		  			}
+	  			}
+	  		}
+	  	);
+	  });
+
+	  // Auto Complete
+	  $(function() {
+	    var availableTags = [
+	      "PHP",
+	      "Python",
+	      "Ruby",
+	      "Scala",
+	      "Scheme"
+	    ];
+	    $( "#item_input" ).my_autocomplete({
+	      source: availableTags
+	    });
+	  });
+
+	</script>
 </head>
 <body>
 	<div class='main'>
@@ -10,17 +96,18 @@
 		</div>
 		<div class='console'>
 			<div class='input'>
+				<input id="item_input">
 			</div>
 			<div class='button'>
-				HARMONY
+				<button id='harmony'>HARMONY</button>
 			</div>
-			<div class='items'>
+			<div class='items' id='items'>
 			</div>
 			<div class='score'>
 			</div>
 		</div>
 		<div class='footer'>
-			HIPPO 2015
+			&copy; Yui Kita 2015
 		</div>
 	</div>
 </body>

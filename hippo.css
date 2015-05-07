@@ -1,6 +1,7 @@
 div {
-	margin: auto 600;
-	font-family: "arial";
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
 }
 
 .header {
