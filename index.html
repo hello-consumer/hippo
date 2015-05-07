@@ -14,13 +14,6 @@
 	      });
 	  });
 
-	  $(function() {
-	  	$( ".added_item" )
-	  		.click(function( event ) {
-	  			alert(4423);
-	  		});
-	  });
-
 	  // Utility
 	  function valid_item(item_name) {
 	  	var item_list = [
@@ -57,6 +50,31 @@
 	  	item.text(item_name);
 	  	item.click(function(event){console.log(this.remove())});
 	  	$( "#items" ).append(item);
+	  }
+
+	  // Cal
+	  function get_score(items) {
+	  	if (items.length < 1) {
+	  		return;
+	  	}
+	  	var item_list = [
+	  		"corn",
+	  		"chocolate",
+	  		"andy",
+	  		"aramame",
+	  		"beans",
+	  	];
+	  	var matrix = [
+	  	[5, 3, 5, 2, 2],
+	  	[1, 4, 5, 6, 2],
+	  	[2, 4, 4, 5, 6],
+	  	[5, 3, 2, 4, 4]
+	  	];
+	  	var index_list = new Array();
+	  	for (var i = 0; i < items.length; i++) {
+	  		index_list.push(items.indexOf(items[i]));
+	  	}
+	  	
 	  }
 
 	  // Ajax input
@@ -104,6 +122,9 @@
 			<div class='items' id='items'>
 			</div>
 			<div class='score'>
+				<div class='score_elem' id='novelty'>0.0</div>
+				<div class='score_elem' id='harmony'>0.0</div>
+				<div class='score_elem' id='sum'>0.0</div>
 			</div>
 		</div>
 		<div class='footer'>
