@@ -1,0 +1,33 @@
+div {
+	margin: auto 600;
+	font-family: "arial";
+}
+
+.header {
+	height: 100;
+	font-size: 100;
+}
+
+.main {
+	height: 600;
+}
+
+.input {
+	height: 100;
+}
+
+.button {
+	height: 100;
+}
+
+.items {
+	height: auto;
+}
+
+.score {
+	height: 100;
+}
+
+.footer {
+	height: 100;
+}
