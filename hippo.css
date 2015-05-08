@@ -1,5 +1,4 @@
 div {
-	width: 80%;
 	margin: 0 auto;
 	text-align: center;
 	font-family: 'Raleway', 'HelveticaNeue', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
@@ -12,12 +11,19 @@ form {
 	padding: 100;
 }
 
+hr {
+	width: 100;
+}
+
+img {
+	width: 50;
+}
+
 .added_item {
 	margin: 10 10;
 }
 
 .header {
-	height: 200;
 	margin: 50 auto;
 }
 
@@ -26,26 +32,24 @@ form {
 }
 
 .main {
-	height: 600;
 }
 
 .input {
-	height: 100;
 }
 
 .harmony_button {
-	height: 100;
 }
 
 .items {
-	height: 200;
 }
 
 .score {
-	height: 100;
 }
 
 .footer {
-	margin-top: 200;
-	height: 100;
+	color: #ddd;
+}
+
+.footer_hr {
+	width: 100%;
 }

@@ -11,13 +11,13 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="hippo.js"></script>
+	<script src="levenshtein.js"></script>
 	<script>
 	  // Harmony Button
 	  $(function() {
 	    $( "#harmony" )
 	      .click(function( event ) {
 	      	// event
-	      	alert(44);
 	      });
 	  });
 
@@ -137,43 +137,101 @@
 	</script>
 </head>
 <body>
-	<div class='main'>
+	<div class='main container'>
 		<div class='header'>
 			<span class='header_title'>
-				<h1>HIPPO v0.01</h1>
+				<img src="imgs/default/lab.png"/>
+				<h5>HIPPO v0.01</h5>
 			</span>
 			<span class='header_subtitle'>
-				<h4>HIPPO is a collection playground where you can try new item collection with computer supported scoring</h4>
+				HIPPO is a creative playground where you can try new item parings with computer supported adjustment
 			</span>
 		</div>
-
-		<div class='console'>
-			<div class='input'>
-				<input placeholder='chocolate' id="item_input" type="email">
+		<div class='row'>
+			<div class='two columns'>
+				<table>
+					<thread>
+						<tr>
+							<th>ID</th>
+							<th>Item</th>
+							<th>hoge</th>
+						</tr>
+					</thread>
+					<tbody>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>chocolate</td>
+							<td>32</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<div class='harmony_button'>
-				<button class='button button-primary' id='harmony'>HARMONIZE</button>
-			</div>
-			<div class='items' id='items'>
-			</div>
-			<hr>
-			<div class='container'>
-				<div class='score row'>
-					<div class='novelty_column four columns'>
-						<label>NOVELTY</label>
-						<h1 id='novelty_score'>0.0</h1>
+			<div class='ten columns'>
+				<div class='console'>
+					<div class='input'>
+						<input placeholder='chocolate' id="item_input" type="email">
 					</div>
-					<div class='harmony_column four columns'>
-						<label>HARMONY</label>
-						<h1 id='harmony_score'>0.0</h1>
+					<div class='harmony_button'>
+						<button class='button button-primary' id='harmony'>HARMONIZE</button>
 					</div>
-					<div class='sum_column four columns'>
-						<label>SUM</label>
-						<h1 id='sum_score'>0.0</h1>
+					<div class='items' id='items'>
+					</div>
+					<hr>
+					<div class='container'>
+						<div class='score row'>
+							<div class='novelty_column four columns'>
+								<label>NOVELTY</label>
+								<h1 id='novelty_score'>0.0</h1>
+							</div>
+							<div class='harmony_column four columns'>
+								<label>HARMONY</label>
+								<h1 id='harmony_score'>0.0</h1>
+							</div>
+							<div class='sum_column four columns'>
+								<label>SUM</label>
+								<h1 id='sum_score'>0.0</h1>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<hr class='footer_hr'>
 		<div class='footer'>
 			&copy; Yui Kita 2015
 		</div>
