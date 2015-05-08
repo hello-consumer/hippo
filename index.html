@@ -7,8 +7,8 @@
 	<link rel="stylesheet" type="text/css" href="skeleton/css/normalize.css" />
 	<link rel="stylesheet" type="text/css" href="skeleton/css/skeleton.css" />
 	<link rel="stylesheet" type="text/css" href="hippo.css" />
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script src="js/jquery-1.11.2.min.js"></script>
+	<script src="js/jquery-ui-1.11.4.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="hippo.js"></script>
 	<script src="levenshtein.js"></script>
@@ -105,6 +105,26 @@
 	  	$('#sum_score').text(novelty + harmony);
 	  }
 	  
+	  //item list
+	  function reload_list() {
+	  	var input_text = $("#item_input").val();
+	  	var tbody = $("#item_list");
+	  	tbody.empty();
+	  	for (var i = 0; i < hippo_item_list.length; i++) {
+	  		var tr = $("<tr>");
+	  		var id_td = $("<td>");
+	  		var item_td = $("<td>");
+	  		var dst_td = $("<td>");
+	  		id_td.text(i);
+	  		item_td.text(hippo_item_list[i]);
+	  		dst_td.text(Levenshtein(input_text, hippo_item_list[i]));
+	  		tr.append(id_td);
+	  		tr.append(item_td);
+	  		tr.append(dst_td);
+	  		tbody.append(tr);
+	  	}
+	  }
+
 	  // Ajax input
 	  $(function() {
 	  	$( "#item_input" ).keypress(
@@ -116,6 +136,14 @@
 		  				this.value = '';
 		  			}
 	  			}
+	  		}
+	  	);
+	  });
+
+	  $(function() {
+	  	$( "#item_input" ).keyup(
+	  		function(e){
+		  		reload_list();
 	  		}
 	  	);
 	  });
@@ -157,7 +185,7 @@
 							<th>hoge</th>
 						</tr>
 					</thread>
-					<tbody>
+					<tbody id='item_list'>
 						<tr>
 							<td>3</td>
 							<td>chocolate</td>
