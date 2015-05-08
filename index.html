@@ -1,12 +1,16 @@
 <html>
 <head>
 	<title>HIPPO</title>
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css" />
-	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+<!-- 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" /> -->
+	<link href='http://fonts.googleapis.com/css?family=Raleway:600,400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="skeleton/css/normalize.css" />
+	<link rel="stylesheet" type="text/css" href="skeleton/css/skeleton.css" />
 	<link rel="stylesheet" type="text/css" href="hippo.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="hippo.js"></script>
 	<script>
 	  // Harmony Button
 	  $(function() {
@@ -19,23 +23,16 @@
 
 	  // Utility
 	  function float_round(num, float_cnt) {
+	  	if (float_cnt < 1) {
+	  		return Math.floor(num);
+	  	}
 	  	var tmp = num * Math.pow(10, float_cnt);
 	  	tmp = Math.floor(tmp);
 	  	return tmp / Math.pow(10, float_cnt);
 	  }
 
 	  function valid_item(item_name) {
-	  	var item_list = [
-	  		"corn",
-	  		"chocolate",
-	  		"andy",
-	  		"aramame",
-	  		"beans",
-	  		"coffee",
-	  		"green leaf",
-	  		"tomato"
-	  	];
-	  	if (jQuery.inArray(item_name, item_list) == -1) {
+	  	if (jQuery.inArray(item_name, hippo_item_list) == -1) {
 	  		return false;
 	  	} else {
 	  		return true;
@@ -60,7 +57,7 @@
 	  	if (jQuery.inArray(item_name, get_added_items()) != -1) {
 	  		return;
 	  	}
-	  	var item = $("<button class='added_item btn btn-info btn-lg'>");
+	  	var item = $("<button class='added_item'>");
 	  	item.text(item_name);
 	  	item.click(function(event){remove_item(this)});
 	  	$( "#items" ).append(item);
@@ -71,27 +68,14 @@
 	  	if (items.length < 2) {
 	  		return {item_list:[], avg:0, sd:0};
 	  	}
-	  	var item_list = [
-	  		"corn",
-	  		"chocolate",
-	  		"andy",
-	  		"aramame",
-	  		"beans",
-	  	];
-	  	var matrix = [
-	  	[5, 3, 5, 2, 2],
-	  	[1, 4, 5, 6, 2],
-	  	[2, 4, 4, 5, 6],
-	  	[5, 3, 2, 4, 4]
-	  	];
 	  	var index_list = new Array();
 	  	for (var i = 0; i < items.length; i++) {
-	  		index_list.push(items.indexOf(items[i]));
+	  		index_list.push(hippo_item_list.indexOf(items[i]));
 	  	}
 	  	var dst_list = new Array();
 	  	for (var i = 0; i < index_list.length; i++) {
 	  		for (var k = i+1; k < index_list.length; k++) {
-	  			dst_list.push(matrix[i][k]);
+	  			dst_list.push(hippo_item_matrix[i][k]);
 	  		}
 	  	}
 	  	var avg = 0;
@@ -103,7 +87,7 @@
 	  		}
 	  	}
 	  	var score = new Object();
-	  	score.item_list = item_list;
+	  	score.item_list = items;
 	  	score.avg = avg / dst_list.length;
 	  	score.sd = sd / dst_list.length;
 	  	return score;
@@ -114,13 +98,13 @@
 	  	var score = get_score(items);
 	  	var harmony = score.avg == 0 ? 0 : 100 - score.avg;
 	  	var novelty = score.sd == 0 ? 0 : score.sd * 100;
-	  	harmony = float_round(harmony, 2);
-	  	novelty = float_round(novelty, 2);
+	  	harmony = float_round(harmony, 0);
+	  	novelty = float_round(novelty, 0);
 	  	$('#novelty_score').text(novelty);
 	  	$('#harmony_score').text(harmony);
 	  	$('#sum_score').text(novelty + harmony);
 	  }
-
+	  
 	  // Ajax input
 	  $(function() {
 	  	$( "#item_input" ).keypress(
@@ -155,21 +139,39 @@
 <body>
 	<div class='main'>
 		<div class='header'>
-			HIPPO
+			<span class='header_title'>
+				<h1>HIPPO v0.01</h1>
+			</span>
+			<span class='header_subtitle'>
+				<h4>HIPPO is a collection playground where you can try new item collection with computer supported scoring</h4>
+			</span>
 		</div>
+
 		<div class='console'>
 			<div class='input'>
-				<input class='form-control' placeholder='Enter Items' id="item_input">
+				<input placeholder='chocolate' id="item_input" type="email">
 			</div>
-			<div class='button'>
-				<button class='btn btn-default' id='harmony'>HARMONY</button>
+			<div class='harmony_button'>
+				<button class='button button-primary' id='harmony'>HARMONIZE</button>
 			</div>
 			<div class='items' id='items'>
 			</div>
-			<div class='score'>
-				<div class='score_elem' id='novelty_score'>0.0</div>
-				<div class='score_elem' id='harmony_score'>0.0</div>
-				<div class='score_elem' id='sum_score'>0.0</div>
+			<hr>
+			<div class='container'>
+				<div class='score row'>
+					<div class='novelty_column four columns'>
+						<label>NOVELTY</label>
+						<h1 id='novelty_score'>0.0</h1>
+					</div>
+					<div class='harmony_column four columns'>
+						<label>HARMONY</label>
+						<h1 id='harmony_score'>0.0</h1>
+					</div>
+					<div class='sum_column four columns'>
+						<label>SUM</label>
+						<h1 id='sum_score'>0.0</h1>
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class='footer'>
