@@ -1,9 +1,12 @@
 <html>
 <head>
-	<link rel="stylesheet" type="text/css" href="hippo.css">
+	<title>HIPPO</title>
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="hippo.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script>
 	  // Harmony Button
 	  $(function() {
@@ -15,6 +18,12 @@
 	  });
 
 	  // Utility
+	  function float_round(num, float_cnt) {
+	  	var tmp = num * Math.pow(10, float_cnt);
+	  	tmp = Math.floor(tmp);
+	  	return tmp / Math.pow(10, float_cnt);
+	  }
+
 	  function valid_item(item_name) {
 	  	var item_list = [
 	  		"corn",
@@ -42,20 +51,25 @@
 	  	return arr;
 	  }
 
+	  function remove_item(item) {
+	  	item.remove();
+	  	reload_score();
+	  }
+
 	  function add_item(item_name) {
 	  	if (jQuery.inArray(item_name, get_added_items()) != -1) {
 	  		return;
 	  	}
-	  	var item = $("<button class='added_item'>");
+	  	var item = $("<button class='added_item btn btn-info btn-lg'>");
 	  	item.text(item_name);
-	  	item.click(function(event){console.log(this.remove())});
+	  	item.click(function(event){remove_item(this)});
 	  	$( "#items" ).append(item);
 	  }
 
 	  // Cal
 	  function get_score(items) {
-	  	if (items.length < 1) {
-	  		return;
+	  	if (items.length < 2) {
+	  		return {item_list:[], avg:0, sd:0};
 	  	}
 	  	var item_list = [
 	  		"corn",
@@ -74,7 +88,37 @@
 	  	for (var i = 0; i < items.length; i++) {
 	  		index_list.push(items.indexOf(items[i]));
 	  	}
-	  	
+	  	var dst_list = new Array();
+	  	for (var i = 0; i < index_list.length; i++) {
+	  		for (var k = i+1; k < index_list.length; k++) {
+	  			dst_list.push(matrix[i][k]);
+	  		}
+	  	}
+	  	var avg = 0;
+	  	var sd = 0;
+	  	for (var i = 0; i < dst_list.length; i++) {
+	  		avg += dst_list[i];
+	  		for (var k = i+1; k < dst_list.length; k++) {
+	  			sd += Math.abs(dst_list[i] - dst_list[k]);
+	  		}
+	  	}
+	  	var score = new Object();
+	  	score.item_list = item_list;
+	  	score.avg = avg / dst_list.length;
+	  	score.sd = sd / dst_list.length;
+	  	return score;
+	  }
+
+	  function reload_score() {
+	  	var items = get_added_items();
+	  	var score = get_score(items);
+	  	var harmony = score.avg == 0 ? 0 : 100 - score.avg;
+	  	var novelty = score.sd == 0 ? 0 : score.sd * 100;
+	  	harmony = float_round(harmony, 2);
+	  	novelty = float_round(novelty, 2);
+	  	$('#novelty_score').text(novelty);
+	  	$('#harmony_score').text(harmony);
+	  	$('#sum_score').text(novelty + harmony);
 	  }
 
 	  // Ajax input
@@ -84,6 +128,7 @@
 	  			if(e.which == 13) {
 	  				if(valid_item(this.value)) {
 		  				add_item(this.value);
+		  				reload_score();
 		  				this.value = '';
 		  			}
 	  			}
@@ -114,17 +159,17 @@
 		</div>
 		<div class='console'>
 			<div class='input'>
-				<input id="item_input">
+				<input class='form-control' placeholder='Enter Items' id="item_input">
 			</div>
 			<div class='button'>
-				<button id='harmony'>HARMONY</button>
+				<button class='btn btn-default' id='harmony'>HARMONY</button>
 			</div>
 			<div class='items' id='items'>
 			</div>
 			<div class='score'>
-				<div class='score_elem' id='novelty'>0.0</div>
-				<div class='score_elem' id='harmony'>0.0</div>
-				<div class='score_elem' id='sum'>0.0</div>
+				<div class='score_elem' id='novelty_score'>0.0</div>
+				<div class='score_elem' id='harmony_score'>0.0</div>
+				<div class='score_elem' id='sum_score'>0.0</div>
 			</div>
 		</div>
 		<div class='footer'>

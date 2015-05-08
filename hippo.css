@@ -4,8 +4,16 @@ div {
 	text-align: center;
 }
 
+body {
+}
+
+.added_item {
+	margin: 10 10;
+	font-size: 30;
+}
+
 .header {
-	height: 100;
+	height: 200;
 	font-size: 100;
 }
 
@@ -22,7 +30,7 @@ div {
 }
 
 .items {
-	height: auto;
+	height: 600;
 }
 
 .score {
