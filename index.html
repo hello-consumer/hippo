@@ -13,6 +13,62 @@
 	<script src="js/hippo.js"></script>
 	<script src="js/first_match.js"></script>
 	<script>
+
+	  // main data
+	  function ItemData() {
+		  var item_list = ["corn",
+						"chocolate",
+						"andy",
+						"aramame",
+						"beans"];
+
+		  var item_matrix = [
+				  		[0, 0, 0, 0, 0],
+				  		[1, 4, 5, 6, 2],
+				  		[2, 4, 4, 5, 6],
+				  		[5, 3, 2, 4, 4],
+				  		[4, 2, 5, 2, 5]
+				  		];
+
+		  function get_score(in_items) {
+		  	if (in_items.length < 2) {
+		  		return {sored_item_list:[], avg:0, sd:0};
+		  	}
+		  	var id_arr = new Array();
+		  	for (var i = 0; i < in_items.length; i++) {
+		  		var id = item_list.indexOf(in_items[i]);
+		  		id_arr.push(id);
+		  	}
+		  	var sd_tmp = new Array();
+		  	for (var i = 0; i < id_arr.length; i++) {
+		  		for (var k = i+1; k < id_arr.length; k++) {
+		  			sd_tmp.push(item_matrix[i][k]);
+		  		}
+		  	}
+		  	var avg = 0;
+		  	var sd = 0;
+		  	for (var i = 0; i < sd_tmp.length; i++) {
+		  		avg += sd_tmp[i];
+		  		for (var k = i+1; k < sd_tmp.length; k++) {
+		  			sd += Math.abs(sd_tmp[i] - sd_tmp[k]);
+		  		}
+		  	}
+		  	var score = {
+		  		item_list : in_items,
+		  		avg : avg / in_items.length,
+		  		sd : sd / in_items.length
+		  	}
+		  	return score;
+		  }
+
+		  return {item_list:item_list,
+		  		  get_id:get_id}
+	  }
+
+	  var item_data = new ItemData();
+	  var added_items = {item_list: new Array(),
+	  					 suggested_list: new Array()}
+
 	  // Harmony Button
 	  $(function() {
 	    $( "#harmony" )
@@ -39,58 +95,18 @@
 	  	}
 	  }
 
-	  function get_added_items() {
-	  	var items = $(".added_item");
-	  	var arr = new Array();
-	  	for (var i = 0; i < items.length; i++) {
-	  		arr.push(items[i].innerText);
-	  	}
-	  	return arr;
-	  }
-
-	  function remove_item(item) {
-	  	item.remove();
-	  	reload_score();
+	  function Item(id, name) {
+	  	return {id: id, name: name}
 	  }
 
 	  function add_item(item_name) {
-	  	if (jQuery.inArray(item_name, get_added_items()) != -1) {
-	  		return;
-	  	}
-	  	var item = $("<button class='added_item'>");
-	  	item.text(item_name);
-	  	item.click(function(event){remove_item(this)});
-	  	$( "#items" ).append(item);
 	  }
 
-	  // Cal
-	  function get_score(items) {
-	  	if (items.length < 2) {
-	  		return {item_list:[], avg:0, sd:0};
-	  	}
-	  	var index_list = new Array();
-	  	for (var i = 0; i < items.length; i++) {
-	  		index_list.push(hippo_item_list.indexOf(items[i]));
-	  	}
-	  	var dst_list = new Array();
-	  	for (var i = 0; i < index_list.length; i++) {
-	  		for (var k = i+1; k < index_list.length; k++) {
-	  			dst_list.push(hippo_item_matrix[i][k]);
-	  		}
-	  	}
-	  	var avg = 0;
-	  	var sd = 0;
-	  	for (var i = 0; i < dst_list.length; i++) {
-	  		avg += dst_list[i];
-	  		for (var k = i+1; k < dst_list.length; k++) {
-	  			sd += Math.abs(dst_list[i] - dst_list[k]);
-	  		}
-	  	}
-	  	var score = new Object();
-	  	score.item_list = items;
-	  	score.avg = avg / dst_list.length;
-	  	score.sd = sd / dst_list.length;
-	  	return score;
+	  function get_item_button(item_obj) {
+	  	var button = $("<button>");
+	  	button.text = item_obj.name;
+	  	button.click(remove_item(item_obj.id));
+	  	return button;
 	  }
 
 	  function reload_score() {
@@ -126,6 +142,7 @@
 	  	}
 	  	valued_items.sort(sort_rule);
 	  	for (var i = 0; i < valued_items.length; i++) {
+
 	  		var tr = $("<tr>");
 	  		var id_td = $("<td>");
 	  		var item_td = $("<td>");
@@ -161,20 +178,6 @@
 		  		reload_list();
 	  		}
 	  	);
-	  });
-
-	  // Auto Complete
-	  $(function() {
-	    var availableTags = [
-	      "PHP",
-	      "Python",
-	      "Ruby",
-	      "Scala",
-	      "Scheme"
-	    ];
-	    $( "#item_input" ).my_autocomplete({
-	      source: availableTags
-	    });
 	  });
 
 	</script>
