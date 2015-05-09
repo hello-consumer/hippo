@@ -10,8 +10,8 @@
 	<script src="js/jquery-1.11.2.min.js"></script>
 	<script src="js/jquery-ui-1.11.4.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="hippo.js"></script>
-	<script src="levenshtein.js"></script>
+	<script src="js/hippo.js"></script>
+	<script src="js/first_match.js"></script>
 	<script>
 	  // Harmony Button
 	  $(function() {
@@ -104,20 +104,35 @@
 	  	$('#harmony_score').text(harmony);
 	  	$('#sum_score').text(novelty + harmony);
 	  }
+
+	  function sort_rule(a, b) {
+	  	if (a.value > b.value) {
+	  		return 0
+	  	}else {
+	  		return 1
+	  	}
+	  }
 	  
 	  //item list
 	  function reload_list() {
 	  	var input_text = $("#item_input").val();
 	  	var tbody = $("#item_list");
 	  	tbody.empty();
+	  	var valued_items = new Array();
 	  	for (var i = 0; i < hippo_item_list.length; i++) {
+	  		var item_name = hippo_item_list[i];
+	  		var match = first_match(item_name, input_text);
+	  		valued_items.push({id:i, name:item_name, value:match});
+	  	}
+	  	valued_items.sort(sort_rule);
+	  	for (var i = 0; i < valued_items.length; i++) {
 	  		var tr = $("<tr>");
 	  		var id_td = $("<td>");
 	  		var item_td = $("<td>");
 	  		var dst_td = $("<td>");
-	  		id_td.text(i);
-	  		item_td.text(hippo_item_list[i]);
-	  		dst_td.text(Levenshtein(input_text, hippo_item_list[i]));
+	  		id_td.text(valued_items[i].id);
+	  		item_td.text(valued_items[i].name);
+	  		dst_td.text(valued_items[i].value);
 	  		tr.append(id_td);
 	  		tr.append(item_td);
 	  		tr.append(dst_td);
