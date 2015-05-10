@@ -61,13 +61,12 @@
 		  	return score;
 		  }
 
-		  return {item_list:item_list,
-		  		  get_id:get_id}
+		  return {item_list: item_list, get_score: get_score}
 	  }
 
 	  var item_data = new ItemData();
-	  var added_items = {item_list: new Array(),
-	  					 suggested_list: new Array()}
+	  var item_collection = {added: new Array(),
+	  					 suggested: new Array()}
 
 	  // Harmony Button
 	  $(function() {
@@ -95,17 +94,49 @@
 	  	}
 	  }
 
-	  function Item(id, name) {
-	  	return {id: id, name: name}
-	  }
-
 	  function add_item(item_name) {
+	  	var id = item_data.indexOf(item_name);
+	  	if (item_collection.added.indexOf(id) == -1) {
+	  		return;
+	  	}
+	  	item_collection.added.push(id);
 	  }
 
-	  function get_item_button(item_obj) {
-	  	var button = $("<button>");
-	  	button.text = item_obj.name;
-	  	button.click(remove_item(item_obj.id));
+	  function suggest_item(item_name) {
+	  	var id = item_data.indexOf(item_name);
+	  	if (item_collection.suggested.indexOf(id) == -1) {
+	  		return;
+	  	}
+	  	item_collection.suggested.push(id);
+	  }
+
+	  function reload_buttons() {
+	  	var added = item_collection.added;
+	  	var buttons = $(".item_button");
+	  	for (var i = 0; i < added.length; i++) {
+	  		var item_id = added[i];
+	  		if (item_id == ) {
+		  		add_button(id);
+		  	}
+	  	}
+	  	for (var i = 0; i < buttons.length; i++) {
+	  		var id = buttons[i].item_id;
+	  		if (added.indexOf(id) == -1) {
+	  			buttons.remove(buttons[i]);
+	  		}
+	  	}
+	  }
+
+	  function remove_item(item_id) {
+	  	item_collection.added.remove(item_id);
+	  	item_collection.suggested.remove(item_id);
+	  }
+
+	  function add_button(item_id) {
+	  	var button = $("<button class='item_button'>");
+	  	button.item_id = item_id;
+	  	button.innerText = item_data.item_list.indexof(item_id);
+	  	button.click(remove_item(item_id));
 	  	return button;
 	  }
 
@@ -162,8 +193,9 @@
 	  	$( "#item_input" ).keypress(
 	  		function(e){
 	  			if(e.which == 13) {
-	  				if(valid_item(this.value)) {
-		  				add_item(this.value);
+	  				var item_name = this.value;
+	  				if(valid_item(item_name)) {
+		  				add_item(item_name);
 		  				reload_score();
 		  				this.value = '';
 		  			}
@@ -175,7 +207,7 @@
 	  $(function() {
 	  	$( "#item_input" ).keyup(
 	  		function(e){
-		  		reload_list();
+		  		reload_buttons();
 	  		}
 	  	);
 	  });
