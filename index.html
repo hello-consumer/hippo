@@ -8,7 +8,7 @@
 	<link rel="stylesheet" type="text/css" href="skeleton/css/skeleton.css" />
 	<link rel="stylesheet" type="text/css" href="hippo.css" />
 	<script src="js/jquery-1.11.2.min.js"></script>
-	<script src="js/jquery-ui-1.11.4.min.js"></script>
+	<script src="js/jquery-ui-1.11.4.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="js/hippo.js"></script>
 	<script src="js/first_match.js"></script>
@@ -30,13 +30,13 @@
 				  		[4, 2, 5, 2, 5]
 				  		];
 
-		  function get_score(in_items) {
-		  	if (in_items.length < 2) {
-		  		return {sored_item_list:[], avg:0, sd:0};
+		  function get_score(item_ids) {
+		  	if (item_ids.length < 2) {
+		  		return {scored_items:[], avg:0, sd:0};
 		  	}
 		  	var id_arr = new Array();
-		  	for (var i = 0; i < in_items.length; i++) {
-		  		var id = item_list.indexOf(in_items[i]);
+		  	for (var i = 0; i < item_ids.length; i++) {
+		  		var id = item_ids[i];
 		  		id_arr.push(id);
 		  	}
 		  	var sd_tmp = new Array();
@@ -54,9 +54,9 @@
 		  		}
 		  	}
 		  	var score = {
-		  		item_list : in_items,
-		  		avg : avg / in_items.length,
-		  		sd : sd / in_items.length
+		  		scored_items : item_ids,
+		  		avg : avg / item_ids.length,
+		  		sd : sd / item_ids.length
 		  	}
 		  	return score;
 		  }
@@ -87,7 +87,7 @@
 	  }
 
 	  function valid_item(item_name) {
-	  	if (jQuery.inArray(item_name, hippo_item_list) == -1) {
+	  	if (jQuery.inArray(item_name, item_data.item_list) == -1) {
 	  		return false;
 	  	} else {
 	  		return true;
@@ -95,11 +95,11 @@
 	  }
 
 	  function add_item(item_name) {
-	  	var id = item_data.indexOf(item_name);
+	  	var id = item_data.item_list.indexOf(item_name);
 	  	if (item_collection.added.indexOf(id) == -1) {
-	  		return;
+		  	item_collection.added.push(id);
 	  	}
-	  	item_collection.added.push(id);
+	  	console.log(item_collection);
 	  }
 
 	  function suggest_item(item_name) {
@@ -113,12 +113,19 @@
 	  function reload_buttons() {
 	  	var added = item_collection.added;
 	  	var buttons = $(".item_button");
+	  	var button_ids = new Array();
+	  	for (var i = 0; i < buttons.length; i++) {
+	  		button_ids.push(buttons[i].item_id);
+	  	}
+	  	console.log(44);
 	  	for (var i = 0; i < added.length; i++) {
 	  		var item_id = added[i];
-	  		if (item_id == ) {
-		  		add_button(id);
-		  	}
+	  		if (button_ids.indexOf(item_id) == -1) {
+	  			add_button(item_id);
+	  		}
 	  	}
+	  	console.log(43);
+
 	  	for (var i = 0; i < buttons.length; i++) {
 	  		var id = buttons[i].item_id;
 	  		if (added.indexOf(id) == -1) {
@@ -128,21 +135,21 @@
 	  }
 
 	  function remove_item(item_id) {
-	  	item_collection.added.remove(item_id);
-	  	item_collection.suggested.remove(item_id);
+	  	item_collection.added.splice(item_id, 1);
+	  	item_collection.suggested.splice(item_id, 1);
+	  	reload_buttons();
 	  }
 
 	  function add_button(item_id) {
 	  	var button = $("<button class='item_button'>");
 	  	button.item_id = item_id;
-	  	button.innerText = item_data.item_list.indexof(item_id);
-	  	button.click(remove_item(item_id));
-	  	return button;
+	  	button.text(item_data.item_list[item_id]);
+	  	button.click(remove_item);
+	  	$(".items").append(button);
 	  }
 
 	  function reload_score() {
-	  	var items = get_added_items();
-	  	var score = get_score(items);
+	  	var score = item_data.get_score(item_collection.added);
 	  	var harmony = score.avg == 0 ? 0 : 100 - score.avg;
 	  	var novelty = score.sd == 0 ? 0 : score.sd * 100;
 	  	harmony = float_round(harmony, 0);
@@ -166,14 +173,13 @@
 	  	var tbody = $("#item_list");
 	  	tbody.empty();
 	  	var valued_items = new Array();
-	  	for (var i = 0; i < hippo_item_list.length; i++) {
-	  		var item_name = hippo_item_list[i];
+	  	for (var i = 0; i < item_data.item_list.length; i++) {
+	  		var item_name = item_data.item_list[i];
 	  		var match = first_match(item_name, input_text);
 	  		valued_items.push({id:i, name:item_name, value:match});
 	  	}
 	  	valued_items.sort(sort_rule);
 	  	for (var i = 0; i < valued_items.length; i++) {
-
 	  		var tr = $("<tr>");
 	  		var id_td = $("<td>");
 	  		var item_td = $("<td>");
@@ -196,7 +202,8 @@
 	  				var item_name = this.value;
 	  				if(valid_item(item_name)) {
 		  				add_item(item_name);
-		  				reload_score();
+		  				reload_buttons();
+		  				// reload_score();
 		  				this.value = '';
 		  			}
 	  			}
@@ -207,7 +214,8 @@
 	  $(function() {
 	  	$( "#item_input" ).keyup(
 	  		function(e){
-		  		reload_buttons();
+		  		// reload_buttons();
+		  		// reload_list();
 	  		}
 	  	);
 	  });
@@ -236,31 +244,6 @@
 						</tr>
 					</thread>
 					<tbody id='item_list'>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
 						<tr>
 							<td>3</td>
 							<td>chocolate</td>
