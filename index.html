@@ -117,32 +117,35 @@
 	  	for (var i = 0; i < buttons.length; i++) {
 	  		button_ids.push(buttons[i].item_id);
 	  	}
-	  	console.log(44);
+
 	  	for (var i = 0; i < added.length; i++) {
 	  		var item_id = added[i];
 	  		if (button_ids.indexOf(item_id) == -1) {
 	  			add_button(item_id);
 	  		}
 	  	}
-	  	console.log(43);
 
 	  	for (var i = 0; i < buttons.length; i++) {
 	  		var id = buttons[i].item_id;
 	  		if (added.indexOf(id) == -1) {
-	  			buttons.remove(buttons[i]);
+	  			buttons[i].remove();
 	  		}
 	  	}
 	  }
 
-	  function remove_item(item_id) {
-	  	item_collection.added.splice(item_id, 1);
-	  	item_collection.suggested.splice(item_id, 1);
+	  function remove_item(e) {
+	  	var item_id = e.target.getAttribute("item_id");
+	  	var index = item_collection.added.indexOf(item_id);
+	  	console.log(index);
+	  	//item_collection.added.splice(index, 1);
+	  	//item_collection.suggested.splice(index, 1);
 	  	reload_buttons();
+	  	reload_score();
 	  }
 
 	  function add_button(item_id) {
 	  	var button = $("<button class='item_button'>");
-	  	button.item_id = item_id;
+	  	button.attr({item_id: item_id});
 	  	button.text(item_data.item_list[item_id]);
 	  	button.click(remove_item);
 	  	$(".items").append(button);
@@ -165,6 +168,12 @@
 	  	}else {
 	  		return 1
 	  	}
+	  }
+
+	  function reload_all() {
+	  	reload_buttons();
+	  	reload_list();
+	  	reload_score();
 	  }
 	  
 	  //item list
@@ -203,7 +212,7 @@
 	  				if(valid_item(item_name)) {
 		  				add_item(item_name);
 		  				reload_buttons();
-		  				// reload_score();
+		  				reload_score();
 		  				this.value = '';
 		  			}
 	  			}
@@ -214,8 +223,7 @@
 	  $(function() {
 	  	$( "#item_input" ).keyup(
 	  		function(e){
-		  		// reload_buttons();
-		  		// reload_list();
+		  		reload_all();
 	  		}
 	  	);
 	  });
