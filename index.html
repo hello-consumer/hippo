@@ -13,7 +13,7 @@
 	<script src="js/hippo.js"></script>
 	<script src="js/first_match.js"></script>
 	<script>
-
+	  var state = {out: 0, added: 1, suggested: 2}
 	  // main data
 	  function ItemData() {
 		  var item_list = ["corn",
@@ -64,9 +64,22 @@
 		  return {item_list: item_list, get_score: get_score}
 	  }
 
+	  function Item(id, name, state) {
+	  	return {id: id, name: name, state: state}
+	  }
+
 	  var item_data = new ItemData();
-	  var item_collection = {added: new Array(),
-	  					 suggested: new Array()}
+	  var item_collection = new Array();
+	  item_collection.get_item = function (item_name) {
+	  	for (var i = 0; i < this.length; i++) {
+	  		if (this[i].name == item_name) {
+	  			return this[i];
+	  		}
+	  	}
+	  	var item = require_item(item_name);
+	  	this.push(item);
+	  	return item;
+	  }
 
 	  // Harmony Button
 	  $(function() {
@@ -94,12 +107,14 @@
 	  	}
 	  }
 
-	  function add_item(item_name) {
+	  function request_item(item_name) {
 	  	var id = item_data.item_list.indexOf(item_name);
-	  	if (item_collection.added.indexOf(id) == -1) {
-		  	item_collection.added.push(id);
-	  	}
-	  	console.log(item_collection);
+	  	return Item(id, item_name, state.out);
+	  }
+
+	  function add_item(item_name) {
+	  	var item = item_collection.get_item(item_name);
+	  	item.kind = state.added;
 	  }
 
 	  function suggest_item(item_name) {
@@ -111,11 +126,21 @@
 	  }
 
 	  function reload_buttons() {
-	  	var added = item_collection.added;
 	  	var buttons = $(".item_button");
-	  	var button_ids = new Array();
+	  	var diff = new Array();
+
+	  	for (var i = 0; i < item_collection.length; i++) {
+	  		diff.push(item_collection[i].item_id);
+	  	}
+
 	  	for (var i = 0; i < buttons.length; i++) {
-	  		button_ids.push(buttons[i].item_id);
+	  		var button_id = buttons[i].item_id;
+	  		if (diff.indexOf(button_id) != -1) {
+	  			diff.remove(button_id);
+	  		} else {
+	  			
+	  		}
+
 	  	}
 
 	  	for (var i = 0; i < added.length; i++) {
@@ -123,6 +148,11 @@
 	  		if (button_ids.indexOf(item_id) == -1) {
 	  			add_button(item_id);
 	  		}
+	  	}
+
+	  	for (var i = 0; i < suggested.length; i++) {
+	  		var item_id = suggested[i];
+	  		if (button_ids.indexOf(item_id) == )
 	  	}
 
 	  	for (var i = 0; i < buttons.length; i++) {
@@ -135,10 +165,9 @@
 
 	  function remove_item(e) {
 	  	var item_id = e.target.getAttribute("item_id");
-	  	var index = item_collection.added.indexOf(item_id);
-	  	console.log(index);
-	  	//item_collection.added.splice(index, 1);
-	  	//item_collection.suggested.splice(index, 1);
+	  	var index = item_collection.added.indexOf(item_id / 1);
+	  	item_collection.added.splice(index, 1);
+	  	item_collection.suggested.splice(index, 1);
 	  	reload_buttons();
 	  	reload_score();
 	  }
@@ -203,6 +232,23 @@
 	  	}
 	  }
 
+	  function suggest_item() {
+	  	var input_text = $("#item_input").val();
+	    var valued_items = new Array();
+	  	for (var i = 0; i < item_data.item_list.length; i++) {
+	  		var item_name = item_data.item_list[i];
+	  		var match = first_match(item_name, input_text);
+	  		valued_items.push({id:i, name:item_name, value:match});
+	  	}
+	  	valued_items.sort(sort_rule);
+	  	var limit = 3;
+	  	item_collection.suggested = new Array();
+	  	for (var i = 0; i < limit; i++) {
+	  		var id = valued_items[i].id;
+	  		item_collection.suggested.push(id);
+	  	}
+	  }
+
 	  // Ajax input
 	  $(function() {
 	  	$( "#item_input" ).keypress(
@@ -223,7 +269,9 @@
 	  $(function() {
 	  	$( "#item_input" ).keyup(
 	  		function(e){
-		  		reload_all();
+	  			var item_name = this.value;
+	  			suggest_item(item_name);
+	  			reload_buttons();
 	  		}
 	  	);
 	  });
