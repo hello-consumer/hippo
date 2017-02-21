@@ -1,0 +1,21 @@
+{
+  "name": "hippo",
+  "version": "0.0.1",
+  "dependencies": {
+    "bootstrap": {
+      "version": "3.3.7",
+      "from": "bootstrap@*",
+      "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz"
+    },
+    "jquery": {
+      "version": "3.1.1",
+      "from": "jquery@*",
+      "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.1.1.tgz"
+    },
+    "jquery-ui-dist": {
+      "version": "1.12.1",
+      "from": "jquery-ui-dist@*",
+      "resolved": "https://registry.npmjs.org/jquery-ui-dist/-/jquery-ui-dist-1.12.1.tgz"
+    }
+  }
+}
