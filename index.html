@@ -1,357 +1,93 @@
+<!doctype html>
 <html>
+
 <head>
-	<title>HIPPO</title>
-<!-- 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css" />
+    <title>HIPPO</title>
+    <!-- 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css" />
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" /> -->
-	<link href='http://fonts.googleapis.com/css?family=Raleway:600,400,300' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="skeleton/css/normalize.css" />
-	<link rel="stylesheet" type="text/css" href="skeleton/css/skeleton.css" />
-	<link rel="stylesheet" type="text/css" href="hippo.css" />
-	<script src="js/jquery-1.11.2.min.js"></script>
-	<script src="js/jquery-ui-1.11.4.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js"></script>
-	<script src="js/hippo.js"></script>
-	<script src="js/first_match.js"></script>
-	<script>
-	  var state = {out: 0, added: 1, suggested: 2}
-	  // main data
-	  function ItemData() {
-		  var item_list = ["corn",
-						"chocolate",
-						"andy",
-						"aramame",
-						"beans"];
+    <link href="http://fonts.googleapis.com/css?family=Raleway:600,400,300" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="hippo.css" /> </head>
 
-		  var item_matrix = [
-				  		[0, 0, 0, 0, 0],
-				  		[1, 4, 5, 6, 2],
-				  		[2, 4, 4, 5, 6],
-				  		[5, 3, 2, 4, 4],
-				  		[4, 2, 5, 2, 5]
-				  		];
-
-		  function get_score(item_ids) {
-		  	if (item_ids.length < 2) {
-		  		return {scored_items:[], avg:0, sd:0};
-		  	}
-		  	var id_arr = new Array();
-		  	for (var i = 0; i < item_ids.length; i++) {
-		  		var id = item_ids[i];
-		  		id_arr.push(id);
-		  	}
-		  	var sd_tmp = new Array();
-		  	for (var i = 0; i < id_arr.length; i++) {
-		  		for (var k = i+1; k < id_arr.length; k++) {
-		  			sd_tmp.push(item_matrix[i][k]);
-		  		}
-		  	}
-		  	var avg = 0;
-		  	var sd = 0;
-		  	for (var i = 0; i < sd_tmp.length; i++) {
-		  		avg += sd_tmp[i];
-		  		for (var k = i+1; k < sd_tmp.length; k++) {
-		  			sd += Math.abs(sd_tmp[i] - sd_tmp[k]);
-		  		}
-		  	}
-		  	var score = {
-		  		scored_items : item_ids,
-		  		avg : avg / item_ids.length,
-		  		sd : sd / item_ids.length
-		  	}
-		  	return score;
-		  }
-
-		  return {item_list: item_list, get_score: get_score}
-	  }
-
-	  function Item(id, name, state) {
-	  	return {id: id, name: name, state: state}
-	  }
-
-	  var item_data = new ItemData();
-	  var item_collection = new Array();
-	  item_collection.get_item = function (item_name) {
-	  	for (var i = 0; i < this.length; i++) {
-	  		if (this[i].name == item_name) {
-	  			return this[i];
-	  		}
-	  	}
-	  	var item = require_item(item_name);
-	  	this.push(item);
-	  	return item;
-	  }
-
-	  // Harmony Button
-	  $(function() {
-	    $( "#harmony" )
-	      .click(function( event ) {
-	      	// event
-	      });
-	  });
-
-	  // Utility
-	  function float_round(num, float_cnt) {
-	  	if (float_cnt < 1) {
-	  		return Math.floor(num);
-	  	}
-	  	var tmp = num * Math.pow(10, float_cnt);
-	  	tmp = Math.floor(tmp);
-	  	return tmp / Math.pow(10, float_cnt);
-	  }
-
-	  function valid_item(item_name) {
-	  	if (jQuery.inArray(item_name, item_data.item_list) == -1) {
-	  		return false;
-	  	} else {
-	  		return true;
-	  	}
-	  }
-
-	  function request_item(item_name) {
-	  	var id = item_data.item_list.indexOf(item_name);
-	  	return Item(id, item_name, state.out);
-	  }
-
-	  function add_item(item_name) {
-	  	var item = item_collection.get_item(item_name);
-	  	item.kind = state.added;
-	  }
-
-	  function suggest_item(item_name) {
-	  	var id = item_data.indexOf(item_name);
-	  	if (item_collection.suggested.indexOf(id) == -1) {
-	  		return;
-	  	}
-	  	item_collection.suggested.push(id);
-	  }
-
-	  function reload_buttons() {
-	  	var buttons = $(".item_button");
-	  	var diff = new Array();
-
-	  	for (var i = 0; i < item_collection.length; i++) {
-	  		diff.push(item_collection[i].item_id);
-	  	}
-
-	  	for (var i = 0; i < buttons.length; i++) {
-	  		var button_id = buttons[i].item_id;
-	  		if (diff.indexOf(button_id) != -1) {
-	  			diff.remove(button_id);
-	  		} else {
-	  			
-	  		}
-
-	  	}
-
-	  	for (var i = 0; i < added.length; i++) {
-	  		var item_id = added[i];
-	  		if (button_ids.indexOf(item_id) == -1) {
-	  			add_button(item_id);
-	  		}
-	  	}
-
-	  	for (var i = 0; i < suggested.length; i++) {
-	  		var item_id = suggested[i];
-	  		if (button_ids.indexOf(item_id) == )
-	  	}
-
-	  	for (var i = 0; i < buttons.length; i++) {
-	  		var id = buttons[i].item_id;
-	  		if (added.indexOf(id) == -1) {
-	  			buttons[i].remove();
-	  		}
-	  	}
-	  }
-
-	  function remove_item(e) {
-	  	var item_id = e.target.getAttribute("item_id");
-	  	var index = item_collection.added.indexOf(item_id / 1);
-	  	item_collection.added.splice(index, 1);
-	  	item_collection.suggested.splice(index, 1);
-	  	reload_buttons();
-	  	reload_score();
-	  }
-
-	  function add_button(item_id) {
-	  	var button = $("<button class='item_button'>");
-	  	button.attr({item_id: item_id});
-	  	button.text(item_data.item_list[item_id]);
-	  	button.click(remove_item);
-	  	$(".items").append(button);
-	  }
-
-	  function reload_score() {
-	  	var score = item_data.get_score(item_collection.added);
-	  	var harmony = score.avg == 0 ? 0 : 100 - score.avg;
-	  	var novelty = score.sd == 0 ? 0 : score.sd * 100;
-	  	harmony = float_round(harmony, 0);
-	  	novelty = float_round(novelty, 0);
-	  	$('#novelty_score').text(novelty);
-	  	$('#harmony_score').text(harmony);
-	  	$('#sum_score').text(novelty + harmony);
-	  }
-
-	  function sort_rule(a, b) {
-	  	if (a.value > b.value) {
-	  		return 0
-	  	}else {
-	  		return 1
-	  	}
-	  }
-
-	  function reload_all() {
-	  	reload_buttons();
-	  	reload_list();
-	  	reload_score();
-	  }
-	  
-	  //item list
-	  function reload_list() {
-	  	var input_text = $("#item_input").val();
-	  	var tbody = $("#item_list");
-	  	tbody.empty();
-	  	var valued_items = new Array();
-	  	for (var i = 0; i < item_data.item_list.length; i++) {
-	  		var item_name = item_data.item_list[i];
-	  		var match = first_match(item_name, input_text);
-	  		valued_items.push({id:i, name:item_name, value:match});
-	  	}
-	  	valued_items.sort(sort_rule);
-	  	for (var i = 0; i < valued_items.length; i++) {
-	  		var tr = $("<tr>");
-	  		var id_td = $("<td>");
-	  		var item_td = $("<td>");
-	  		var dst_td = $("<td>");
-	  		id_td.text(valued_items[i].id);
-	  		item_td.text(valued_items[i].name);
-	  		dst_td.text(valued_items[i].value);
-	  		tr.append(id_td);
-	  		tr.append(item_td);
-	  		tr.append(dst_td);
-	  		tbody.append(tr);
-	  	}
-	  }
-
-	  function suggest_item() {
-	  	var input_text = $("#item_input").val();
-	    var valued_items = new Array();
-	  	for (var i = 0; i < item_data.item_list.length; i++) {
-	  		var item_name = item_data.item_list[i];
-	  		var match = first_match(item_name, input_text);
-	  		valued_items.push({id:i, name:item_name, value:match});
-	  	}
-	  	valued_items.sort(sort_rule);
-	  	var limit = 3;
-	  	item_collection.suggested = new Array();
-	  	for (var i = 0; i < limit; i++) {
-	  		var id = valued_items[i].id;
-	  		item_collection.suggested.push(id);
-	  	}
-	  }
-
-	  // Ajax input
-	  $(function() {
-	  	$( "#item_input" ).keypress(
-	  		function(e){
-	  			if(e.which == 13) {
-	  				var item_name = this.value;
-	  				if(valid_item(item_name)) {
-		  				add_item(item_name);
-		  				reload_buttons();
-		  				reload_score();
-		  				this.value = '';
-		  			}
-	  			}
-	  		}
-	  	);
-	  });
-
-	  $(function() {
-	  	$( "#item_input" ).keyup(
-	  		function(e){
-	  			var item_name = this.value;
-	  			suggest_item(item_name);
-	  			reload_buttons();
-	  		}
-	  	);
-	  });
-
-	</script>
-</head>
 <body>
-	<div class='main container'>
-		<div class='header'>
-			<span class='header_title'>
-				<img src="imgs/default/lab.png"/>
-				<h5>HIPPO v0.01</h5>
-			</span>
-			<span class='header_subtitle'>
+    <div class="container">
+        <header class="header">
+            <nav class="header_title"> <img src="imgs/default/lab.png" />
+                <h5>HIPPO v0.01</h5> </nav> <span class="header_subtitle">
 				HIPPO is a creative playground where you can try new item parings with computer supported adjustment
-			</span>
-		</div>
-		<div class='row'>
-			<div class='two columns'>
-				<table>
-					<thread>
-						<tr>
-							<th>ID</th>
-							<th>Item</th>
-							<th>hoge</th>
-						</tr>
-					</thread>
-					<tbody id='item_list'>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>chocolate</td>
-							<td>32</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class='ten columns'>
-				<div class='console'>
-					<div class='input'>
-						<input placeholder='chocolate' id="item_input" type="email">
-					</div>
-					<div class='harmony_button'>
-						<button class='button button-primary' id='harmony'>HARMONIZE</button>
-					</div>
-					<div class='items' id='items'>
-					</div>
-					<hr>
-					<div class='container'>
-						<div class='score row'>
-							<div class='novelty_column four columns'>
-								<label>NOVELTY</label>
-								<h1 id='novelty_score'>0.0</h1>
-							</div>
-							<div class='harmony_column four columns'>
-								<label>HARMONY</label>
-								<h1 id='harmony_score'>0.0</h1>
-							</div>
-							<div class='sum_column four columns'>
-								<label>SUM</label>
-								<h1 id='sum_score'>0.0</h1>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<hr class='footer_hr'>
-		<div class='footer'>
-			&copy; Yui Kita 2015
-		</div>
-	</div>
+			</span> </header>
+        <main>
+            <div class="row">
+                <div class="col-xs-2">
+                    <table class="table table-striped">
+                        <thread>
+                            <tr>
+                                <th>ID</th>
+                                <th>Item</th>
+                                <th>hoge</th>
+                            </tr>
+                        </thread>
+                        <tbody id="item_list">
+                            <tr>
+                                <td>3</td>
+                                <td>chocolate</td>
+                                <td>32</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>chocolate</td>
+                                <td>32</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>chocolate</td>
+                                <td>32</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-10">
+                    <div class="well">
+                        <div class="form-group">
+                            <label for="ingredient">Ingredient</label>
+                            <input name="ingredient" placeholder="chocolate" id="item_input" type="text">
+                            <input type="button" value="Add" /> </div>
+                        <div class="harmony_button">
+                            <button class="btn btn-primary" id="harmony">HARMONIZE</button>
+                        </div>
+                        <div class="items" id="items"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">NOVELTY</div>
+                        <div class="panel-body" id="novelty_score">0.0</div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">HARMONY</div>
+                        <div class="panel-body" id="harmony_score">0.0</div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">SUM</div>
+                        <div class="panel-body" id="sum_score">0.0</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="row"> &copy; Yui Kita 2015 </footer>
+    </div>
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="js/jquery-ui-1.11.4.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/hippo.js"></script>
+    <script src="js/first_match.js"></script>
 </body>
+
 </html>

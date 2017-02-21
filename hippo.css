@@ -1,55 +1,7 @@
-div {
-	margin: 0 auto;
-	text-align: center;
+* {
 	font-family: 'Raleway', 'HelveticaNeue', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
 }
 
-body {
-}
-
-form {
-	padding: 100;
-}
-
-hr {
-	width: 100;
-}
-
-img {
-	width: 50;
-}
-
-.added_item {
-	margin: 10 10;
-}
-
-.header {
-	margin: 50 auto;
-}
-
-.header_subtitle {
-	color: #999;
-}
-
-.main {
-}
-
-.input {
-}
-
-.harmony_button {
-}
-
-.items {
-}
-
-.score {
-}
-
-.footer {
-	color: #ddd;
-}
-
-.footer_hr {
-	width: 100%;
+.header_title img{
+    width: 50px;
 }
