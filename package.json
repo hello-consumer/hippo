@@ -8,8 +8,11 @@
     },
     "license": "UNLICENSED",
     "dependencies": {
-        "bootstrap":"*",
         "jquery":"*",
-        "jquery-ui-dist":"*"
+        "angular":"*",
+        "bootstrap":"*",
+        "angular-animate":"*",
+        "angular-touch":"*",
+        "angular-ui-bootstrap":"*"
     }
 }

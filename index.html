@@ -8,56 +8,49 @@
     <link href="http://fonts.googleapis.com/css?family=Raleway:600,400,300" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap-theme.css" />
-    <link rel="stylesheet" type="text/css" href="/node_modules/jquery-ui-dist/jquery-ui.css" />
-    <link rel="stylesheet" type="text/css" href="/node_modules/jquery-ui-dist/jquery-ui.structure.css" />
-    <link rel="stylesheet" type="text/css" href="/node_modules/jquery-ui-dist/jquery-ui.theme.css" />
+    <link rel="stylesheet" type="text/css" href="/node_modules/angular/angular-csp.css" />
     <link rel="stylesheet" type="text/css" href="hippo.css" /> </head>
 
 <body>
-    <div class="container">
+    <div class="container" ng-app="hippo">
         <header class="header">
             <nav class="header_title"> <img src="imgs/default/lab.png" />
                 <h5>HIPPO v0.01</h5> </nav> <span class="header_subtitle">
 				HIPPO is a creative playground where you can try new item parings with computer supported adjustment
 			</span> </header>
-        <main>
+        <main ng-controller="ItemController">
             <div class="row">
-                <div class="col-xs-2">
+                <div class="col-xs-2" >
                     <table class="table table-striped">
                         <thread>
                             <tr>
+                                <th></th>
                                 <th>ID</th>
                                 <th>Item</th>
                                 <th>hoge</th>
                             </tr>
                         </thread>
                         <tbody id="item_list">
-                            <tr>
-                                <td>3</td>
-                                <td>chocolate</td>
-                                <td>32</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>chocolate</td>
-                                <td>32</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>chocolate</td>
-                                <td>32</td>
+                            <tr ng-repeat="basketItem in basket">
+                                <td><a class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="remove(basketItem)"></a></td>
+                                <td>{{basketItem.id}}</td>
+                                <td>{{basketItem.name}}</td>
+                                <td>{{basketItem.hoge}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="col-xs-10">
                     <div class="well">
-                        <div class="form-group">
-                            <label for="ingredient">Ingredient</label>
-                            <input name="ingredient" placeholder="chocolate" id="item_input" type="text">
-                            <input type="button" value="Add" /> </div>
+                        <form ng-submit="addIngredient()">
+                            <div class="form-group">
+                                <label for="ingredient">Ingredient</label>
+                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in suggestions | filter:$viewValue | limitTo:8" class="form-control" typeahead-popup-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
+                                <input type="submit" value="Add" class="btn" />
+                            </div>
+                        </form>
                         <div class="harmony_button">
-                            <button class="btn btn-primary" id="harmony">HARMONIZE</button>
+                            <button class="btn btn-primary" id="harmony" ng-click="harmonize()">HARMONIZE</button>
                         </div>
                         <div class="items" id="items"> </div>
                     </div>
@@ -67,19 +60,19 @@
                 <div class="col-xs-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">NOVELTY</div>
-                        <div class="panel-body" id="novelty_score">0.0</div>
+                        <div class="panel-body" id="novelty_score">{{novelty}}</div>
                     </div>
                 </div>
                 <div class="col-xs-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">HARMONY</div>
-                        <div class="panel-body" id="harmony_score">0.0</div>
+                        <div class="panel-body" id="harmony_score">{{harmony}}</div>
                     </div>
                 </div>
                 <div class="col-xs-4">
                     <div class="panel panel-primary">
                         <div class="panel-heading">SUM</div>
-                        <div class="panel-body" id="sum_score">0.0</div>
+                        <div class="panel-body" id="sum_score">{{novelty + harmony}}</div>
                     </div>
                 </div>
             </div>
@@ -87,7 +80,10 @@
         <footer class="row"> &copy; Yui Kita 2015 </footer>
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
-    <script src="/node_modules/jquery-ui-dist/jquery-ui.js"></script>
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="/node_modules/angular-animate/angular-animate.js"></script>
+    <script src="/node_modules/angular-touch/angular-touch.js"></script>
+    <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/hippo.js"></script>
     <script src="js/first_match.js"></script>
