@@ -1,18 +1,23 @@
 {
-    "name": "hippo",
-    "version": "0.0.1",
-    "description": "Chef's Hippocampus",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/hello-consumer/hippo.git"
-    },
-    "license": "UNLICENSED",
-    "dependencies": {
-        "jquery":"*",
-        "angular":"*",
-        "bootstrap":"*",
-        "angular-animate":"*",
-        "angular-touch":"*",
-        "angular-ui-bootstrap":"*"
-    }
+  "name": "hippo",
+  "version": "0.0.1",
+  "description": "Chef's Hippocampus",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hello-consumer/hippo.git"
+  },
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "angular": "*",
+    "angular-animate": "*",
+    "angular-touch": "*",
+    "angular-ui-bootstrap": "*",
+    "bootstrap": "*",
+    "jquery": "*",
+    "pg": "^6.1.2",
+    "restify": "*"
+  }
 }

@@ -25,17 +25,13 @@
                         <thread>
                             <tr>
                                 <th></th>
-                                <th>ID</th>
                                 <th>Item</th>
-                                <th>hoge</th>
                             </tr>
                         </thread>
                         <tbody id="item_list">
                             <tr ng-repeat="basketItem in basket">
                                 <td><a class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="remove(basketItem)"></a></td>
-                                <td>{{basketItem.id}}</td>
-                                <td>{{basketItem.name}}</td>
-                                <td>{{basketItem.hoge}}</td>
+                                <td>{{basketItem}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -45,7 +41,11 @@
                         <form ng-submit="addIngredient()">
                             <div class="form-group">
                                 <label for="ingredient">Ingredient</label>
-                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in suggestions | filter:$viewValue | limitTo:8" class="form-control" typeahead-popup-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
+                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in getSuggestion($viewValue)" class="form-control" typeahead-loading="loadingSuggestions" typeahead-no-results="noResults" typeahead-popup-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
+                                <i ng-show="loadingSuggestions" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResults">
+                                    <i class="glyphicon glyphicon-remove"></i> No Results Found
+                                </div>
                                 <input type="submit" value="Add" class="btn" />
                             </div>
                         </form>
