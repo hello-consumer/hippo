@@ -6,9 +6,9 @@
     <!-- 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-theme.min.css" />
 	<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" /> -->
     <link href="http://fonts.googleapis.com/css?family=Raleway:600,400,300" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap-theme.css" />
-    <link rel="stylesheet" type="text/css" href="/node_modules/angular/angular-csp.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/angular/angular-csp.css" />
     <link rel="stylesheet" type="text/css" href="hippo.css" /> </head>
 
 <body>
@@ -41,7 +41,7 @@
                         <form ng-submit="addIngredient()">
                             <div class="form-group">
                                 <label for="ingredient">Ingredient</label>
-                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in getSuggestion($viewValue)" class="form-control" typeahead-loading="loadingSuggestions" typeahead-no-results="noResults" typeahead-popup-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/node_modules/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
+                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in getSuggestion($viewValue)" class="form-control" typeahead-loading="loadingSuggestions" typeahead-no-results="noResults" typeahead-popup-template-url="/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
                                 <i ng-show="loadingSuggestions" class="glyphicon glyphicon-refresh"></i>
                                 <div ng-show="noResults">
                                     <i class="glyphicon glyphicon-remove"></i> No Results Found
@@ -79,12 +79,12 @@
         </main>
         <footer class="row"> &copy; Yui Kita 2015 </footer>
     </div>
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
-    <script src="/node_modules/angular/angular.js"></script>
-    <script src="/node_modules/angular-animate/angular-animate.js"></script>
-    <script src="/node_modules/angular-touch/angular-touch.js"></script>
-    <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
-    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/jquery/dist/jquery.js"></script>
+    <script src="/angular/angular.js"></script>
+    <script src="/angular-animate/angular-animate.js"></script>
+    <script src="/angular-touch/angular-touch.js"></script>
+    <script src="/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/hippo.js"></script>
     <script src="js/first_match.js"></script>
 </body>

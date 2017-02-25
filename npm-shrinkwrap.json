@@ -4,22 +4,22 @@
   "dependencies": {
     "angular": {
       "version": "1.6.2",
-      "from": "angular@*",
+      "from": "https://registry.npmjs.org/angular/-/angular-1.6.2.tgz",
       "resolved": "https://registry.npmjs.org/angular/-/angular-1.6.2.tgz"
     },
     "angular-animate": {
       "version": "1.6.2",
-      "from": "angular-animate@*",
+      "from": "https://registry.npmjs.org/angular-animate/-/angular-animate-1.6.2.tgz",
       "resolved": "https://registry.npmjs.org/angular-animate/-/angular-animate-1.6.2.tgz"
     },
     "angular-touch": {
       "version": "1.6.2",
-      "from": "angular-touch@*",
+      "from": "https://registry.npmjs.org/angular-touch/-/angular-touch-1.6.2.tgz",
       "resolved": "https://registry.npmjs.org/angular-touch/-/angular-touch-1.6.2.tgz"
     },
     "angular-ui-bootstrap": {
       "version": "2.5.0",
-      "from": "angular-ui-bootstrap@*",
+      "from": "https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-2.5.0.tgz",
       "resolved": "https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-2.5.0.tgz"
     },
     "ap": {
@@ -55,7 +55,7 @@
     },
     "bootstrap": {
       "version": "3.3.7",
-      "from": "bootstrap@*",
+      "from": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz",
       "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz"
     },
     "brace-expansion": {
@@ -228,7 +228,7 @@
     },
     "jquery": {
       "version": "3.1.1",
-      "from": "jquery@*",
+      "from": "https://registry.npmjs.org/jquery/-/jquery-3.1.1.tgz",
       "resolved": "https://registry.npmjs.org/jquery/-/jquery-3.1.1.tgz"
     },
     "keep-alive-agent": {
@@ -340,7 +340,7 @@
     },
     "pg": {
       "version": "6.1.2",
-      "from": "pg@*",
+      "from": "https://registry.npmjs.org/pg/-/pg-6.1.2.tgz",
       "resolved": "https://registry.npmjs.org/pg/-/pg-6.1.2.tgz",
       "dependencies": {
         "semver": {
@@ -417,7 +417,7 @@
     },
     "restify": {
       "version": "4.3.0",
-      "from": "restify@*",
+      "from": "https://registry.npmjs.org/restify/-/restify-4.3.0.tgz",
       "resolved": "https://registry.npmjs.org/restify/-/restify-4.3.0.tgz",
       "dependencies": {
         "node-uuid": {
@@ -456,7 +456,7 @@
     },
     "sequelize": {
       "version": "3.30.2",
-      "from": "sequelize@*",
+      "from": "https://registry.npmjs.org/sequelize/-/sequelize-3.30.2.tgz",
       "resolved": "https://registry.npmjs.org/sequelize/-/sequelize-3.30.2.tgz",
       "dependencies": {
         "semver": {

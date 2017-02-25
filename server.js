@@ -38,6 +38,43 @@
     );
 
 
+    server.get(new RegExp('\/bootstrap\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+
+    server.get(new RegExp('\/angular\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+
+    server.get(new RegExp('\/jquery\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+
+    server.get(new RegExp('\/angular-animate\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+
+    server.get(new RegExp('\/angular-touch\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+
+    server.get(new RegExp('\/angular-ui-bootstrap\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+
+    server.get(new RegExp('\/?.*'), restify.serveStatic({
+        directory: 'public',
+        'default': 'index.html'
+    }));
+
+
+
     item_matrix = [
         [0, 0, 0, 0, 0],
         [1, 4, 5, 6, 2],

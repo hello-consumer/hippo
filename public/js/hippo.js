@@ -1,7 +1,5 @@
 var domain, angular;
 
-domain = '//localhost:8080';
-
 angular.module("hippo", ["ui.bootstrap"]);
 
 angular.module("hippo").controller("ItemController", ["$scope", "$http", function ($scope, $http) {
@@ -12,7 +10,7 @@ angular.module("hippo").controller("ItemController", ["$scope", "$http", functio
     $scope.addIngredient = function () {
         $scope.basket.push($scope.newingredient);
         if ($scope.noResults) {
-            $http.put(domain + '/suggestion/', {
+            $http.put('/suggestion/', {
                 ingredient: $scope.newingredient
             });
         }
@@ -24,14 +22,14 @@ angular.module("hippo").controller("ItemController", ["$scope", "$http", functio
     };
 
     $scope.harmonize = function () {
-        $http.post(domain + "/harmonize/", $scope.basket).then(function (response) {
+        $http.post("/harmonize/", $scope.basket).then(function (response) {
             $scope.harmony = response.data.harmony;
             $scope.novelty = response.data.novelty;
         });
     };
 
     $scope.getSuggestion = function (val) {
-        return $http.get(domain + '/suggestions', {
+        return $http.get('/suggestions', {
             params: {
                 fragment: val
             }
