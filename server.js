@@ -1,11 +1,14 @@
+/*jslint node: true */
 (function () {
     "use strict";
-    var restify, server, suggestions, item_matrix;
+    var restify, server, suggestions, item_matrix, config, HippoData, data;
+
+    config = require('./config.js');  //This is excluded from source control to keep keys and passwords secure.
+
     restify = require('restify');
+    HippoData = require('./data.js');
 
-    require('./data.js');
-
-    suggestions = ["corn", "chocolate", "andy", "aramame", "beans"];
+    data = new HippoData(config.postgres.user, config.postgres.database, config.postgres.host, config.postgres.password);
 
     server = restify.createServer();
     server.use(restify.bodyParser({ mapParams: true }));
@@ -16,10 +19,9 @@
     server.get(
         '/suggestions/',
         function (req, res, next) {
-            var filtered = suggestions.filter(function (value) {
-                return value.indexOf(req.params.fragment) !== -1;
+            data.findIngredient(req.params.fragment, function (result) {
+                res.send(result);
             });
-            res.send(filtered);
             next();
         }
     );
@@ -27,10 +29,10 @@
     server.put(
         '/suggestion/:ingredient',
         function (req, res, next) {
-            if (!suggestions.includes(req.params.ingredient)) {
-                suggestions.push(req.params.ingredient);
-            }
-            res.send(201);
+            data.createIngredient(req.params.ingredient, function (result) {
+                res.send(201);
+            });
+
             next();
         }
     );

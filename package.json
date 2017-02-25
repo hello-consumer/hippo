@@ -18,6 +18,7 @@
     "bootstrap": "*",
     "jquery": "*",
     "pg": "^6.1.2",
-    "restify": "*"
+    "restify": "*",
+    "sequelize": "^3.30.2"
   }
 }
