@@ -1,8 +1,8 @@
 var domain, angular;
 
-angular.module("hippo", ["ui.bootstrap"]);
+angular.module("hippocampus", []);
 
-angular.module("hippo").controller("ItemController", ["$scope", "$http", function ($scope, $http) {
+angular.module("hippocampus").controller("HippoController", ["$scope", "$http", function ($scope, $http) {
     "use strict";
     $scope.basket = [];
     $scope.novelty = 0.0;

@@ -1,11 +1,14 @@
 /*jslint node: true */
 (function () {
     "use strict";
-    var restify, server, suggestions, item_matrix, config, HippoData, data;
-
+    var restify, server, suggestions, item_matrix, config, HippoData, data, CookieParser;
+    
+    
     config = require('./config.js');  //This is excluded from source control to keep keys and passwords secure.
 
     restify = require('restify');
+    CookieParser = require('restify-cookies');
+    
     HippoData = require('./data.js');
 
     data = new HippoData(config.postgres.user, config.postgres.database, config.postgres.host, config.postgres.password);
@@ -13,6 +16,7 @@
     server = restify.createServer();
     server.use(restify.bodyParser({ mapParams: true }));
     server.use(restify.queryParser());
+    server.use(CookieParser.parse);
 
     server.pre(restify.CORS());
 
@@ -36,6 +40,33 @@
             next();
         }
     );
+    
+    server.put(
+        '/recipe',
+        function (req, res, next) {
+            data.createRecipe(req, function (result) {
+                res.send(201);
+            });
+            
+            next();
+        }
+    );
+    
+    server.post(
+        '/user/register',
+        function (req, res, next) {
+            data.createUser(req.body.email, req.body.password, function(result){
+                if(result.error) {
+                    res.send(409, {error: result.error});
+                } else {
+                    res.send(201);
+                    res.setCookie('user', req.body.email);
+                }
+                
+            });
+            next();
+        }
+    );
 
 
     server.get(new RegExp('\/bootstrap\/?.*'), restify.serveStatic({
@@ -54,6 +85,12 @@
     }));
 
     server.get(new RegExp('\/angular-animate\/?.*'), restify.serveStatic({
+        directory: 'node_modules',
+        'default': 'index.html'
+    }));
+    
+    
+    server.get(new RegExp('\/angular-route\/?.*'), restify.serveStatic({
         directory: 'node_modules',
         'default': 'index.html'
     }));

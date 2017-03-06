@@ -1,0 +1,55 @@
+<div class="row">
+                <div class="col-xs-2">
+                    <table class="table table-striped">
+                        <thread>
+                            <tr>
+                                <th></th>
+                                <th>Item</th>
+                            </tr>
+                        </thread>
+                        <tbody id="item_list">
+                            <tr ng-repeat="basketItem in basket">
+                                <td>
+                                    <a class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="remove(basketItem)"></a>
+                                </td>
+                                <td>{{basketItem}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-xs-10">
+                    <div class="well">
+                        <form ng-submit="addIngredient()">
+                            <div class="form-group">
+                                <label for="ingredient">Ingredient</label>
+                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in getSuggestion($viewValue)" class="form-control" typeahead-loading="loadingSuggestions" typeahead-no-results="noResults" typeahead-popup-template-url="/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/angular-ui-bootstrap/template/typeahead/typeahead-match.html"> <i ng-show="loadingSuggestions" class="glyphicon glyphicon-refresh"></i>
+                                <div ng-show="noResults"> <i class="glyphicon glyphicon-remove"></i> No Results Found </div>
+                                <input type="submit" value="Add" class="btn" /> </div>
+                        </form>
+                        <div class="harmony_button">
+                            <button class="btn btn-primary" id="harmony" ng-click="harmonize()">HARMONIZE</button>
+                        </div>
+                        <div class="items" id="items"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">NOVELTY</div>
+                        <div class="panel-body" id="novelty_score">{{novelty}}</div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">HARMONY</div>
+                        <div class="panel-body" id="harmony_score">{{harmony}}</div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">SUM</div>
+                        <div class="panel-body" id="sum_score">{{novelty + harmony}}</div>
+                    </div>
+                </div>
+            </div>

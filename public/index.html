@@ -12,81 +12,47 @@
     <link rel="stylesheet" type="text/css" href="hippo.css" /> </head>
 
 <body>
-    <div class="container" ng-app="hippo">
-        <header class="header">
-            <nav class="header_title"> <img src="imgs/default/lab.png" />
-                <h5>HIPPO v0.01</h5> </nav> <span class="header_subtitle">
-				HIPPO is a creative playground where you can try new item parings with computer supported adjustment
-			</span> </header>
-        <main ng-controller="ItemController">
-            <div class="row">
-                <div class="col-xs-2" >
-                    <table class="table table-striped">
-                        <thread>
-                            <tr>
-                                <th></th>
-                                <th>Item</th>
-                            </tr>
-                        </thread>
-                        <tbody id="item_list">
-                            <tr ng-repeat="basketItem in basket">
-                                <td><a class="glyphicon glyphicon-remove" aria-hidden="true" ng-click="remove(basketItem)"></a></td>
-                                <td>{{basketItem}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+    <div ng-app="app">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> <a class="navbar-brand" href="#"><img src="imgs/default/lab.png" height="100%"></img></a> </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#!">Home</a></li>
+                        <li><a href="#!item">Try It</a></li>
+                        <li><a href="#!recipes">Recipes</a></li>
+                        <li><a href="#!ingredients">Ingredients</a></li>
+                    </ul>
+                    
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#!login">Log In</a></li>
+                        
+                    </ul>
                 </div>
-                <div class="col-xs-10">
-                    <div class="well">
-                        <form ng-submit="addIngredient()">
-                            <div class="form-group">
-                                <label for="ingredient">Ingredient</label>
-                                <input name="ingredient" placeholder="chocolate" id="newingredient" type="text" ng-model="newingredient" uib-typeahead="suggestion for suggestion in getSuggestion($viewValue)" class="form-control" typeahead-loading="loadingSuggestions" typeahead-no-results="noResults" typeahead-popup-template-url="/angular-ui-bootstrap/template/typeahead/typeahead-popup.html" typeahead-template-url="/angular-ui-bootstrap/template/typeahead/typeahead-match.html">
-                                <i ng-show="loadingSuggestions" class="glyphicon glyphicon-refresh"></i>
-                                <div ng-show="noResults">
-                                    <i class="glyphicon glyphicon-remove"></i> No Results Found
-                                </div>
-                                <input type="submit" value="Add" class="btn" />
-                            </div>
-                        </form>
-                        <div class="harmony_button">
-                            <button class="btn btn-primary" id="harmony" ng-click="harmonize()">HARMONIZE</button>
-                        </div>
-                        <div class="items" id="items"> </div>
-                    </div>
-                </div>
+                <!-- /.navbar-collapse -->
             </div>
-            <div class="row">
-                <div class="col-xs-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">NOVELTY</div>
-                        <div class="panel-body" id="novelty_score">{{novelty}}</div>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">HARMONY</div>
-                        <div class="panel-body" id="harmony_score">{{harmony}}</div>
-                    </div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">SUM</div>
-                        <div class="panel-body" id="sum_score">{{novelty + harmony}}</div>
-                    </div>
-                </div>
-            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <main ng-view class="container">
         </main>
         <footer class="row"> &copy; Yui Kita 2015 </footer>
     </div>
     <script src="/jquery/dist/jquery.js"></script>
     <script src="/angular/angular.js"></script>
     <script src="/angular-animate/angular-animate.js"></script>
+    
+    <script src="/angular-route/angular-route.js"></script>
     <script src="/angular-touch/angular-touch.js"></script>
     <script src="/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="js/hippo.js"></script>
-    <script src="js/first_match.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/modules/hippocampus.js"></script>
+    <script src="/js/modules/ingredients.js"></script>
+    <script src="/js/modules/login.js"></script>
+    <script src="/js/modules/recipe.js"></script>
 </body>
 
 </html>

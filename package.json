@@ -13,12 +13,15 @@
   "dependencies": {
     "angular": "https://registry.npmjs.org/angular/-/angular-1.6.2.tgz",
     "angular-animate": "https://registry.npmjs.org/angular-animate/-/angular-animate-1.6.2.tgz",
+    "angular-route": "^1.6.2",
     "angular-touch": "https://registry.npmjs.org/angular-touch/-/angular-touch-1.6.2.tgz",
     "angular-ui-bootstrap": "https://registry.npmjs.org/angular-ui-bootstrap/-/angular-ui-bootstrap-2.5.0.tgz",
+    "bcrypt": "^1.0.2",
     "bootstrap": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.7.tgz",
     "jquery": "https://registry.npmjs.org/jquery/-/jquery-3.1.1.tgz",
     "pg": "https://registry.npmjs.org/pg/-/pg-6.1.2.tgz",
     "restify": "https://registry.npmjs.org/restify/-/restify-4.3.0.tgz",
+    "restify-cookies": "^0.2.2",
     "sequelize": "https://registry.npmjs.org/sequelize/-/sequelize-3.30.2.tgz"
   }
 }

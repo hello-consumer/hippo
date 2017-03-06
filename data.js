@@ -1,10 +1,12 @@
 /*jslint node: true */
 (function () {
     "use strict";
-    var Sequelize, database, User, Ingredient;
+    var Sequelize, database, User, Ingredient, Recipe, RecipeIngredient, Bcrypt;
 
     function HippoData(username, database, host, password) {
         Sequelize = require('sequelize');
+        Bcrypt = require("bcrypt");
+        
         database = new Sequelize(database, username, password, {
             host: host,
             dialect: 'postgres',
@@ -16,32 +18,48 @@
         });
         User = database.define('user', {
             username: Sequelize.STRING,
-            birthday: Sequelize.DATE
+            password: Sequelize.STRING
         });
         Ingredient = database.define('ingredient', {
             name: Sequelize.STRING,
             approved: Sequelize.BOOLEAN
         });
+        Recipe = database.define('recipe', {
+            name: Sequelize.STRING,
+            source: Sequelize.STRING,
+            URL: Sequelize.STRING
+        });
+        RecipeIngredient = database.define('recipeIngredient', {});
+        
+        RecipeIngredient.belongsTo(Recipe);
+        RecipeIngredient.belongsTo(Ingredient);
+        
+        
 
         database.sync();
     }
 
     //shared object for requests
-    HippoData.prototype.createUser = function (username, birthday, next) {
-        var result;
-        if (!(birthday instanceof Date)) {
-            birthday = Date.parse(birthday);
-        }
-        User.create({
-            username: username,
-            birthday: birthday
-        }).success(function (result) {
-            result.createdUser = result;
-        }).done(function () {
-            if (next) {
+    HippoData.prototype.createUser = function (username, password, next) {
+        var result = {};
+        
+        User.findOne({ where: {username: username} }).then(function (user) {
+            if (user) {
+                result.error = "User already exists";
                 next(result);
+            } else {
+                Bcrypt.hash(password, 10, function (err, hash) {
+                    User.create({
+                        username: username,
+                        password: hash
+                    }).then(function (result) {
+                        result.createdUser = result;
+                        next(result);
+                    });
+                });
             }
-        });
+        })
+        
     };
 
     HippoData.prototype.createIngredient = function (name, next) {
@@ -57,6 +75,10 @@
             next(r);
         });
 
+    };
+    
+    HippoData.prototype.createRecipe = function (recipe, next) {
+        
     };
 
     HippoData.prototype.findIngredient = function (name, next) {
